@@ -9,12 +9,17 @@ namespace Source.Data
 {
     public class ApplicationDbContext : DbContext
     {
+        private readonly string _connectionString;
+        public ApplicationDbContext(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         public DbSet<User> Users { get; set; } 
         public DbSet<LostItem> LostItems { get; set; } 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-        optionsBuilder.UseSqlServer("Data Source=Bolyhos;Initial Catalog=lostFoundDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
+        optionsBuilder.UseSqlServer(_connectionString);
         }
 
     }

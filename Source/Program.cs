@@ -7,7 +7,13 @@ class Program
 {
     static void Main(string[] args)
     {
-        using var db = new ApplicationDbContext();
+        var config = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .Build();
+
+        string connectionString = config.GetConnectionString("DefaultConnection");
+        using var db = new ApplicationDbContext(connectionString);
         var running = true;
         while (running)
         {
