@@ -22,7 +22,61 @@ class Program
         {
             if (user != null)
             {
-                //Means user has logged in
+                if (user.Role == "User")
+                {
+                    Console.WriteLine("1. View My Lost Items");
+                    Console.WriteLine("2. Report Lost Item");
+                    Console.WriteLine("3. View Found Items");
+                    Console.WriteLine("4. Logout");
+                    Console.Write("Select an option: ");
+                    string option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            // Call method to view lost items
+                            break;
+                        case "2":
+                            // Call method to report lost item
+                            break;
+                        case "3":
+                            // call method to view found items
+                            break;
+                        case "4":
+                            Console.WriteLine("--------------------------------------------\nLogout successful.\n--------------------------------------------");
+                            user = null; // Logout
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option. Please try again.");
+                            break;
+                    }
+                }
+                else if (user.Role == "Admin")
+                {
+                    Console.WriteLine("1. Create Found Item");
+                    Console.WriteLine("2. Manage Lost Items");
+                    Console.WriteLine("3. Manage Claims");
+                    Console.WriteLine("4. Logout");
+                    Console.Write("Select an option: ");
+                    string option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            // Call method to view all users
+                            break;
+                        case "2":
+                            // Call method to manage lost items
+                            break;
+                        case "3":
+                            // Call method to manage claims
+                            break;
+                        case "4":
+                            user = null; // Logout
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option. Please try again.");
+                            break;
+                    }
+                }
             }
             else
             //Means user has not logged in
