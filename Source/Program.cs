@@ -7,14 +7,17 @@ class Program
 {
     static void Main(string[] args)
     {
+        // Load configuration from appsettings.json
         var config = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
         .Build();
-
+        // Get the connection string from the configuration
         string connectionString = config.GetConnectionString("DefaultConnection");
         using var db = new ApplicationDbContext(connectionString);
         db.Database.EnsureCreated(); // Ensure the database is created
+        //Instantiate the user object to null
+        //This will be used to check if the user is logged in or not.
         User user = null;
 
         var running = true;
@@ -167,6 +170,7 @@ class Program
         string email = Console.ReadLine();
         Console.Write("Enter your password: ");
         string password = Console.ReadLine();
+        //Find the user in the database where email and password match
         var user = db.Users.FirstOrDefault(u => u.Email == email && u.PasswordHash == password);
         if (user != null)
         {
