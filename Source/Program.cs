@@ -14,7 +14,7 @@ class Program
 
         string connectionString = config.GetConnectionString("DefaultConnection");
         using var db = new ApplicationDbContext(connectionString);
-
+        db.Database.EnsureCreated(); // Ensure the database is created
         User user = null;
 
         var running = true;
