@@ -15,4 +15,4 @@ Install NuGet packages
 5: Microsoft.Extensions.Configuration.Json
 
 
-Create an empty database in SSMS and get your connection string and paste it into appsettings.json by replacing "CONNECTION STRING HERE" with "<your connection string>"
+Create an empty database in SSMS and get your connection string and paste it into appsettings.json by replacing "CONNECTION STRING HERE"
