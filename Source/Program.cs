@@ -2,6 +2,10 @@
 using Source.Data;
 using Microsoft.Extensions.Configuration;
 using Source.Models;
+using Source.Services;
+
+
+
 
 class Program
 {
@@ -66,7 +70,7 @@ class Program
                     {
                         case "1":
                             //Call method to create found item
-                            CreateFoundItem(db);
+                            FoundItemService.CreateFoundItem(db);
                             break;
                         case "2":
                             // Call method to manage found items
@@ -99,7 +103,7 @@ class Program
                 switch (option)
                 {
                     case "1":
-                        user = LoginUser(db);
+                        user = AuthService.LoginUser(db);
                         if (user != null)
                         {
                             Console.WriteLine($"--------------------------------------------\nWelcome, {user.Name}!\n--------------------------------------------");
@@ -110,7 +114,7 @@ class Program
                         }
                         break;
                     case "2":
-                        RegisterUser(db);
+                        AuthService.RegisterUser(db);
 
                         break;
                     case "3":
@@ -124,135 +128,5 @@ class Program
         }
 
     }
-    //User Registration method
-    static void RegisterUser(ApplicationDbContext db)
-    {
-        Console.WriteLine("--------------------------------------------\nRegister\n--------------------------------------------");
-        Console.Write("Enter your name:");
-        string newName = Console.ReadLine();
-        Console.Write("Enter your email address: ");
-        string newEmail = Console.ReadLine();
-        Console.Write("Enter your password: ");
-        string newPassword = Console.ReadLine();
-        //Validate email format
-        if (!newEmail.Contains("@") || !newEmail.Contains("."))
-        {
-            Console.WriteLine("--------------------------------------------\nInvalid email format. Please try again.\n--------------------------------------------");
-            return;
-        }
-        // Validate password length
-        if (newPassword.Length < 6)
-        {
-            Console.WriteLine("--------------------------------------------\nPassword must be at least 6 characters long. Please try again.\n--------------------------------------------");
-            return;
-        }
-        // Check if the email already exists
-        var existingUser = db.Users.FirstOrDefault(u => u.Email == newEmail);
-        if (existingUser != null)
-        {
-            Console.WriteLine("--------------------------------------------\nEmail already exists. Please try again.\n--------------------------------------------");
-            return;
-        }
-
-        // Create a new user and save to the database
-        var newUser = new User
-        {
-            Name = newName,
-            Email = newEmail,
-            PasswordHash = newPassword,
-            Role = "User" // Default role for new users
-        };
-        db.Users.Add(newUser);
-        db.SaveChanges();
-        Console.WriteLine("--------------------------------------------\nUser registered successfully.\n--------------------------------------------");
-
-    }
-    //User Login method
-    //This method will check if the user exists in the database and return the user object if it does.
-    static User LoginUser(ApplicationDbContext db)
-    {
-        Console.WriteLine("--------------------------------------------\nLogin\n--------------------------------------------");
-        Console.Write("Enter your email address: ");
-        string email = Console.ReadLine();
-        Console.Write("Enter your password: ");
-        string password = Console.ReadLine();
-        //Find the user in the database where email and password match
-        var user = db.Users.FirstOrDefault(u => u.Email == email && u.PasswordHash == password);
-        if (user != null)
-        {
-            return user;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    static void CreateFoundItem(ApplicationDbContext db)
-    {
-        Console.WriteLine("--------------------------------------------\nCreate Found Item\n--------------------------------------------");
-        Console.Write("Enter the name of the found item: ");
-        string name = Console.ReadLine();
-        Console.Write("Enter a description of the found item: ");
-        string description = Console.ReadLine();
-        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(description))
-        {
-            Console.WriteLine("--------------------------------------------\nName and description cannot be empty.\n--------------------------------------------");
-            return;
-        }
-        FoundItem foundItem = new FoundItem
-        {
-            Name = name,
-            Description = description,
-            DateFound = DateOnly.FromDateTime(DateTime.Now),
-            Status = "Unclaimed" // Default status for new found items
-        };
-        db.FoundItems.Add(foundItem);
-        db.SaveChanges();
-        Console.WriteLine("--------------------------------------------\nFound item created successfully.\n--------------------------------------------");
-        return;
-    }
-    //Method to print a table of items
-    //Made it modular using c# reflection so that it can be used for an object of any class
-    static void printTable<T>(List<T> itemsToPrint)
-    {
-        var type = typeof(T);
-        //Get the properties of the type
-        var properties = type.GetProperties();
-        var columnWidth = new Dictionary<string, int>();
-
-        //Calculate the width of each column based on the property name and value length
-        foreach (var property in properties)
-        {
-            var maxLength = property.Name.Length;
-            foreach (var item in itemsToPrint)
-            {
-                var value = property.GetValue(item)?.ToString() ?? string.Empty;
-                if (value.Length > maxLength)
-                {
-                    maxLength = value.Length;
-                }
-            }
-            columnWidth[property.Name] = maxLength;
-        }
-
-        // Build dynamic format string
-        string format = "| " + string.Join(" | ", properties.Select(p => $"{{0,-{columnWidth[p.Name]}}}")) + " |";
-
-        // Print header
-        var headers = properties.Select(p => p.Name).ToArray();
-        Console.WriteLine(format, headers);
-
-        // Print separator
-        int totalWidth = columnWidth.Values.Sum() + (3 * properties.Length) + 1;
-        Console.WriteLine(new string('-', totalWidth));
-
-        // Print rows
-        foreach (var item in itemsToPrint)
-        {
-            var values = properties.Select(p => (p.GetValue(item)?.ToString()) ?? "").ToArray();
-            Console.WriteLine(format, values);
-        }
-
-    }
+    
 }
