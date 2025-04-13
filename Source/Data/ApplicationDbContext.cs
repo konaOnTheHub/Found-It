@@ -16,6 +16,8 @@ namespace Source.Data
         }
         public DbSet<User> Users { get; set; } 
         public DbSet<LostItem> LostItems { get; set; } 
+        public DbSet<FoundItem> FoundItems { get; set; }
+        public DbSet<Claim> Claims { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
