@@ -56,24 +56,30 @@ class Program
                 else if (user.Role == "Admin")
                 {
                     Console.WriteLine("1. Create Found Item");
-                    Console.WriteLine("2. Manage Lost Items");
-                    Console.WriteLine("3. Manage Claims");
-                    Console.WriteLine("4. Logout");
+                    Console.WriteLine("2. Manage Found Items");
+                    Console.WriteLine("3. Manage Lost Items");
+                    Console.WriteLine("4. Manage Claims");
+                    Console.WriteLine("5. Logout");
                     Console.Write("Select an option: ");
                     string option = Console.ReadLine();
                     switch (option)
                     {
                         case "1":
-                            // Call method to view all users
+                            //Call method to create found item
+                            CreateFoundItem(db);
                             break;
                         case "2":
-                            // Call method to manage lost items
+                            // Call method to manage found items
                             break;
                         case "3":
-                            // Call method to manage claims
+                            // Call method to manage lost items
                             break;
                         case "4":
+                            // Call method to manage claims
+                            break;
+                        case "5":
                             user = null; // Logout
+                            Console.WriteLine("--------------------------------------------\nLogout successful.\n--------------------------------------------");
                             break;
                         default:
                             Console.WriteLine("Invalid option. Please try again.");
@@ -180,5 +186,30 @@ class Program
         {
             return null;
         }
+    }
+
+    static void CreateFoundItem(ApplicationDbContext db)
+    {
+        Console.WriteLine("--------------------------------------------\nCreate Found Item\n--------------------------------------------");
+        Console.Write("Enter the name of the found item: ");
+        string name = Console.ReadLine();
+        Console.Write("Enter a description of the found item: ");
+        string description = Console.ReadLine();
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(description))
+        {
+            Console.WriteLine("--------------------------------------------\nName and description cannot be empty.\n--------------------------------------------");
+            return;
+        }
+        FoundItem foundItem = new FoundItem
+        {
+            Name = name,
+            Description = description,
+            DateFound = DateOnly.FromDateTime(DateTime.Now),
+            Status = "Unclaimed" // Default status for new found items
+        };
+        db.FoundItems.Add(foundItem);
+        db.SaveChanges();
+        Console.WriteLine("--------------------------------------------\nFound item created successfully.\n--------------------------------------------");
+        return;
     }
 }
