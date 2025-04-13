@@ -15,9 +15,9 @@ namespace Source.Models
         public int UserId { get; set; } // Foreign key to User
         public User User { get; set; } // Navigation property to User
         [ForeignKey("FoundItem")]
-        public int FoundItemId { get; set; } // Foreign key to FoundItem
+        public int FoundId { get; set; } // Foreign key to FoundItem
         public FoundItem FoundItem { get; set; } // Navigation property to FoundItem
-        public DateTime DateClaimed { get; set; } // Date when the claim was made
+        public Dateonly DateClaimed { get; set; } // Date when the claim was made
         public string Status { get; set; } = string.Empty; // Status of the claim 
     }
 }
