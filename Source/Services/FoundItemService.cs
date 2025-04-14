@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Source.Data;
 using Source.Models;
 
@@ -47,7 +48,7 @@ namespace Source.Services
             }
             //Print the found items in a table format using reflection
             PrinterService.printFoundItem(foundItems);
-            Console.WriteLine("\nSelect an option:\n1. Update Found Item\n2. Delete Found Item\n3. Back to Main Menu\n--------------------------------------------");
+            Console.WriteLine("\nSelect an option:\n1. Update Found Item Info\n2. Delete Found Item\n3. Back to Main Menu\n--------------------------------------------");
             string option = Console.ReadLine();
             switch (option)
             {
@@ -56,6 +57,7 @@ namespace Source.Services
                     break;
                 case "2":
                     //Delete found item method
+                    DeleteFoundItem(db);
                     break;
                 case "3":
                     return;
@@ -73,7 +75,7 @@ namespace Source.Services
             var foundItems = db.FoundItems.ToList();
             if (foundItems.Count == 0)
             {
-                Console.WriteLine("No found items available.");
+                Console.WriteLine("No found items available.\n");
                 return;
             }
             //Print the found items in a table format
@@ -93,6 +95,34 @@ namespace Source.Services
                     break;
             }
 
-        }   
-    }   
+        }
+        public static void DeleteFoundItem(ApplicationDbContext db)
+        {
+            Console.WriteLine("--------------------------------------------\nDelete Found Item\n--------------------------------------------");
+            Console.Write("!WARNING This will delete all claims made on the item. Leave blank to cancel!\nEnter the ID of the found item you want to delete: ");
+            string input = Console.ReadLine();
+            //Check if input is empty
+            if (string.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("--------------------------------------------\nDelete operation cancelled.\n--------------------------------------------");
+                return;
+            }
+            //Check if input is a number
+            if (!int.TryParse(input, out _))
+            {
+                Console.WriteLine("--------------------------------------------\nInvalid input. Please enter a valid number.\n--------------------------------------------");
+                return;
+            }
+            FoundItem? foundItem = db.FoundItems.Include(x => x.Claims).FirstOrDefault(x => x.FoundId == int.Parse(input));
+            //Check if found item exists
+            if (foundItem == null)
+            {
+                Console.WriteLine("--------------------------------------------\nFound item not found.\n--------------------------------------------");
+                return;
+            }
+            db.FoundItems.Remove(foundItem);
+            db.SaveChanges();
+            Console.WriteLine("--------------------------------------------\nFound item and all its associated claims were deleted successfully.\n--------------------------------------------");
+        }
+    }
 }

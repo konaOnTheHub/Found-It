@@ -19,9 +19,18 @@ namespace Source.Data
         public DbSet<FoundItem> FoundItems { get; set; }
         public DbSet<Claim> Claims { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Claim>()
+                .HasOne(x => x.FoundItem)
+                .WithMany(x => x.Claims)
+                .HasForeignKey(x => x.FoundId)
+                .OnDelete(DeleteBehavior.Cascade); //Ensures when a found Item is deleted it deletes all claims associated
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-        optionsBuilder.UseSqlServer(_connectionString);
+            optionsBuilder.UseSqlServer(_connectionString);
+            
         }
 
     }
