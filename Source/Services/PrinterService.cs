@@ -18,6 +18,7 @@ namespace Source.Services
             var descHeader = "Description";
             var dateHeader = "Date Found";
             var statusHeader = "Status";
+            var claimsHeader = "Claims";
 
             // Calculate max lengths
             int idWidth = Math.Max(items.Max(i => i.FoundId.ToString().Length), idHeader.Length);
@@ -25,15 +26,16 @@ namespace Source.Services
             int descWidth = Math.Max(items.Max(i => i.Description.Length), descHeader.Length);
             int dateWidth = Math.Max(items.Max(i => i.DateFound.ToString("yyyy-MM-dd").Length), dateHeader.Length);
             int statusWidth = Math.Max(items.Max(i => i.Status.Length), statusHeader.Length);
+            int claimsWidth = claimsHeader.Length; // Claims is a count, so we can use the header length
 
             // Build dynamic format string
-            string format = $"| {{0,-{idWidth}}} | {{1,-{nameWidth}}} | {{2,-{descWidth}}} | {{3,-{dateWidth}}} | {{4,-{statusWidth}}} |";
+            string format = $"| {{0,-{idWidth}}} | {{1,-{nameWidth}}} | {{2,-{descWidth}}} | {{3,-{dateWidth}}} | {{4,-{statusWidth}}} | {{5,-{claimsWidth}}} |";
 
             // Print header
-            Console.WriteLine(format, idHeader, nameHeader, descHeader, dateHeader, statusHeader);
+            Console.WriteLine(format, idHeader, nameHeader, descHeader, dateHeader, statusHeader, claimsHeader);
 
             // Print separator
-            Console.WriteLine(new string('-', idWidth + nameWidth + descWidth + dateWidth + statusWidth)); 
+            Console.WriteLine(new string('-', idWidth + nameWidth + descWidth + dateWidth + statusWidth + claimsWidth + 19)); 
 
             // Print rows
             foreach (var item in items)
@@ -43,7 +45,8 @@ namespace Source.Services
                     item.Name,
                     item.Description,
                     item.DateFound.ToString("yyyy-MM-dd"),
-                    item.Status);
+                    item.Status,
+                    item.Claims.Count);
 
             }
 

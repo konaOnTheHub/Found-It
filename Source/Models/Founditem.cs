@@ -14,8 +14,6 @@ namespace Source.Models
         public string Description { get; set; } = string.Empty; // description of the item
         public DateOnly DateFound { get; set; }  // Date the item was found
         public string Status { get; set; } = string.Empty;
-
-       
         public List<Claim> Claims { get; set; } = new List<Claim>();  // Navigation property to Claim table
     }
 }
