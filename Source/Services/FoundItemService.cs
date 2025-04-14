@@ -96,7 +96,7 @@ namespace Source.Services
             }
 
         }
-        public static void DeleteFoundItem(ApplicationDbContext db)
+        private static void DeleteFoundItem(ApplicationDbContext db)
         {
             Console.WriteLine("--------------------------------------------\nDelete Found Item\n--------------------------------------------");
             Console.Write("!WARNING This will delete all claims made on the item. Leave blank to cancel!\nEnter the ID of the found item you want to delete: ");
