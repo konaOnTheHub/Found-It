@@ -95,37 +95,42 @@ class Program
             else
             //Means user has not logged in
             {
-                Console.WriteLine("Generic Bar Name Lost & Found Management System");
-                Console.WriteLine("1. Login");
-                Console.WriteLine("2. Register");
-                Console.WriteLine("3. Exit");
-                Console.Write("Select an option: ");
-                string option = Console.ReadLine();
-                switch (option)
-                {
-                    case "1":
-                        user = AuthService.LoginUser(db);
-                        if (user != null)
-                        {
-                            Console.WriteLine($"--------------------------------------------\nWelcome, {user.Name}!\n--------------------------------------------");
-                        }
-                        else
-                        {
-                            Console.WriteLine("--------------------------------------------\nInvalid username or password.\n--------------------------------------------");
-                        }
-                        break;
-                    case "2":
-                        AuthService.RegisterUser(db);
+    Console.WriteLine("Generic Bar Name Lost & Found Management System");
+    Console.WriteLine("1. Login");
+    Console.WriteLine("2. Register");
+    Console.WriteLine("3. Exit");
+    Console.Write("Select an option: ");
+    
+    // Read the user input and convert it to lowercase to make it case-insensitive
+    string option = Console.ReadLine()?.ToLower(); 
 
-                        break;
-                    case "3":
-                        running = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid option. Please try again.");
-                        break;
-                }
+    switch (option)
+    {
+        case "1":
+        case "login":
+            user = AuthService.LoginUser(db);
+            if (user != null)
+            {
+                Console.WriteLine($"--------------------------------------------\nWelcome, {user.Name}!\n--------------------------------------------");
             }
+            else
+            {
+                Console.WriteLine("--------------------------------------------\nInvalid username or password.\n--------------------------------------------");
+            }
+            break;
+        case "2":
+        case "register":
+            AuthService.RegisterUser(db);
+            break;
+        case "3":
+        case "exit":
+            running = false;
+            break;
+        default:
+            Console.WriteLine("Invalid option. Please try again.");
+            break;
+    }
+}
         }
 
     }
