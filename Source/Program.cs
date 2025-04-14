@@ -74,6 +74,7 @@ class Program
                             break;
                         case "2":
                             // Call method to manage found items
+                            FoundItemService.ManageFoundItems(db);
                             break;
                         case "3":
                             // Call method to manage lost items
@@ -128,5 +129,5 @@ class Program
         }
 
     }
-    
+
 }

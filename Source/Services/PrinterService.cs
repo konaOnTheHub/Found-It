@@ -2,53 +2,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Source.Models;
 
 namespace Source.Services
 {
     public class PrinterService
     {
-        //Method to print a table of items
-        //Made it modular using c# reflection so that it can be used for an object of any class
-        static void printTable<T>(List<T> itemsToPrint)
-    {
-        var type = typeof(T);
-        //Get the properties of the type
-        var properties = type.GetProperties();
-        var columnWidth = new Dictionary<string, int>();
-
-        //Calculate the width of each column based on the property name and value length
-        foreach (var property in properties)
+        //Method to print a table of found items
+        public static void printFoundItem(List<FoundItem> items)
         {
-            var maxLength = property.Name.Length;
-            foreach (var item in itemsToPrint)
+
+            // Include header names to calculate max width
+            var idHeader = "ID";
+            var nameHeader = "Name";
+            var descHeader = "Description";
+            var dateHeader = "Date Found";
+            var statusHeader = "Status";
+
+            // Calculate max lengths
+            int idWidth = Math.Max(items.Max(i => i.FoundId.ToString().Length), idHeader.Length);
+            int nameWidth = Math.Max(items.Max(i => i.Name.Length), nameHeader.Length);
+            int descWidth = Math.Max(items.Max(i => i.Description.Length), descHeader.Length);
+            int dateWidth = Math.Max(items.Max(i => i.DateFound.ToString("yyyy-MM-dd").Length), dateHeader.Length);
+            int statusWidth = Math.Max(items.Max(i => i.Status.Length), statusHeader.Length);
+
+            // Build dynamic format string
+            string format = $"| {{0,-{idWidth}}} | {{1,-{nameWidth}}} | {{2,-{descWidth}}} | {{3,-{dateWidth}}} | {{4,-{statusWidth}}} |";
+
+            // Print header
+            Console.WriteLine(format, idHeader, nameHeader, descHeader, dateHeader, statusHeader);
+
+            // Print separator
+            Console.WriteLine(new string('-', idWidth + nameWidth + descWidth + dateWidth + statusWidth)); 
+
+            // Print rows
+            foreach (var item in items)
             {
-                var value = property.GetValue(item)?.ToString() ?? string.Empty;
-                if (value.Length > maxLength)
-                {
-                    maxLength = value.Length;
-                }
+                Console.WriteLine(format,
+                    item.FoundId,
+                    item.Name,
+                    item.Description,
+                    item.DateFound.ToString("yyyy-MM-dd"),
+                    item.Status);
+
             }
-            columnWidth[property.Name] = maxLength;
+
         }
-
-        // Build dynamic format string
-        string format = "| " + string.Join(" | ", properties.Select(p => $"{{0,-{columnWidth[p.Name]}}}")) + " |";
-
-        // Print header
-        var headers = properties.Select(p => p.Name).ToArray();
-        Console.WriteLine(format, headers);
-
-        // Print separator
-        int totalWidth = columnWidth.Values.Sum() + (3 * properties.Length) + 1;
-        Console.WriteLine(new string('-', totalWidth));
-
-        // Print rows
-        foreach (var item in itemsToPrint)
-        {
-            var values = properties.Select(p => (p.GetValue(item)?.ToString()) ?? "").ToArray();
-            Console.WriteLine(format, values);
-        }
-
-    }
     }
 }
