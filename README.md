@@ -16,3 +16,8 @@ Install NuGet packages
 
 
 Create an empty database in SSMS and get your connection string and paste it into appsettings.json by replacing "CONNECTION STRING HERE"
+
+
+TESTING FOR THE LOST AND FOUND MANAGEMENT FOUND HERE:
+
+https://docs.google.com/document/d/18Rc26MJzbVMUJIk4zoVUiUlpgQukwWlpirYxUlkTY4E/edit?tab=t.0
