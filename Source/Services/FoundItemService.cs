@@ -61,9 +61,38 @@ namespace Source.Services
                     return;
                 default:
                     Console.WriteLine("Invalid option. Please try again.");
+                    ManageFoundItems(db);
                     break;
             }
 
         }
-    }
+        public static void ViewFoundItems(ApplicationDbContext db, User userLogged)
+        {
+            Console.WriteLine("--------------------------------------------\nView Found Items\n--------------------------------------------");
+            //Get all found items from the database
+            var foundItems = db.FoundItems.ToList();
+            if (foundItems.Count == 0)
+            {
+                Console.WriteLine("No found items available.");
+                return;
+            }
+            //Print the found items in a table format
+            PrinterService.printFoundItem(foundItems);
+            Console.WriteLine("\n1. Claim Item\n2. Back to Main Menu");
+            string option = Console.ReadLine();
+            switch (option)
+            {
+                case "1":
+                    ClaimService.CreateClaim(db, userLogged);
+                    break;
+                case "2":
+                    return;
+                default:
+                    Console.WriteLine("Invalid option. Please try again.");
+                    ViewFoundItems(db, userLogged);
+                    break;
+            }
+
+        }   
+    }   
 }

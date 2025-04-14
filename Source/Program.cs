@@ -46,7 +46,8 @@ class Program
                             // Call method to report lost item
                             break;
                         case "3":
-                            // call method to view found items
+                            // Call method to view found items
+                            FoundItemService.ViewFoundItems(db, user);
                             break;
                         case "4":
                             Console.WriteLine("--------------------------------------------\nLogout successful.\n--------------------------------------------");
