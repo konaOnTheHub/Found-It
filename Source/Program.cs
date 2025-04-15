@@ -44,29 +44,7 @@ class Program
                             break;
                         case "2":
                             // Report Lost Item
-                            Console.WriteLine("\n--------------------------------------------\nReport Lost Item\n--------------------------------------------");
-                            Console.Write("Enter item name: ");
-                            string name = Console.ReadLine();
-                            Console.Write("Enter item description: ");
-                            string description = Console.ReadLine();
-                            Console.Write("Enter lost location: ");
-                            string location = Console.ReadLine();
-                            Console.Write("Enter date lost (yyyy-mm-dd): ");
-                            DateOnly.TryParse(Console.ReadLine(), out DateOnly dateLost);
-
-                            var lostItem = new LostItem
-                            {
-                              Name = name,
-                              Description = description,
-                              Location = location,
-                              DateLost = dateLost == default ? DateOnly.FromDateTime(DateTime.Now) : dateLost,
-                              UserId = user.UserId,
-                              Status = "Lost"
-                             };
-
-                             db.LostItems.Add(lostItem);
-                             db.SaveChanges();
-                             Console.WriteLine("Lost item reported successfully.");
+                            LostItemService.ReportLostItem(db, user);
                              break;
                         case "3":
                             // Call method to view found items
