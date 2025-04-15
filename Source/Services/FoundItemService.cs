@@ -48,18 +48,21 @@ namespace Source.Services
             }
             //Print the found items in a table format using reflection
             PrinterService.printFoundItem(foundItems);
-            Console.WriteLine("\nSelect an option:\n1. Update Found Item Info\n2. Delete Found Item\n3. Back to Main Menu\n--------------------------------------------");
+            Console.WriteLine("\nSelect an option:\n1. Update Found Item Info\n2. Delete Found Item\n3. Manage Claims\n4. Back to Main Menu\n--------------------------------------------");
             string option = Console.ReadLine();
             switch (option)
             {
                 case "1":
-                    //Update found item method
+                    //Update found item method PRANTEK
                     break;
                 case "2":
                     //Delete found item method
                     DeleteFoundItem(db);
                     break;
                 case "3":
+                    //Manage claims method REYAN
+                    break;
+                case "4":
                     return;
                 default:
                     Console.WriteLine("Invalid option. Please try again.");

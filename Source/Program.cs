@@ -40,10 +40,10 @@ class Program
                     switch (option)
                     {
                         case "1":
-                            // Call method to view lost items
+                            // Call method to view lost items SAKI
                             break;
                         case "2":
-                            // Call method to report lost item
+                            // Call method to report lost item ARUN
                             break;
                         case "3":
                             // Call method to view found items
@@ -63,8 +63,7 @@ class Program
                     Console.WriteLine("1. Create Found Item");
                     Console.WriteLine("2. Manage Found Items");
                     Console.WriteLine("3. Manage Lost Items");
-                    Console.WriteLine("4. Manage Claims");
-                    Console.WriteLine("5. Logout");
+                    Console.WriteLine("4. Logout");
                     Console.Write("Select an option: ");
                     string option = Console.ReadLine();
                     switch (option)
@@ -78,12 +77,9 @@ class Program
                             FoundItemService.ManageFoundItems(db);
                             break;
                         case "3":
-                            // Call method to manage lost items
+                            // Call method to manage lost items REYAN
                             break;
                         case "4":
-                            // Call method to manage claims
-                            break;
-                        case "5":
                             user = null; // Logout
                             Console.WriteLine("--------------------------------------------\nLogout successful.\n--------------------------------------------");
                             break;
