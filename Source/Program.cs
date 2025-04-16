@@ -31,6 +31,7 @@ class Program
             {
                 if (user.Role == "User")
                 {
+                    PrinterService.PrintHeader(); // Prints the header
                     Console.WriteLine("1. View My Lost Items");
                     Console.WriteLine("2. Report Lost Item");
                     Console.WriteLine("3. View Found Items");
@@ -66,6 +67,7 @@ class Program
                 }
                 else if (user.Role == "Admin")
                 {
+                    PrinterService.PrintHeader(); // Prints the header
                     Console.WriteLine("1. Create Found Item");
                     Console.WriteLine("2. Manage Found Items");
                     Console.WriteLine("3. Manage Lost Items");
@@ -99,6 +101,7 @@ class Program
             else
             //Means user has not logged in
             {
+    PrinterService.PrintHeader(); // Prints the header
     Console.WriteLine("Generic Bar Name Lost & Found Management System");
     Console.WriteLine("1. Login");
     Console.WriteLine("2. Register");
