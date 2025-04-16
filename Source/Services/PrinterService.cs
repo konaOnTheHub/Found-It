@@ -34,6 +34,9 @@ namespace Source.Services
 
             // Welcome message
             Console.WriteLine("\nWelcome to 'Found It' - Your Lost & Found Management System!");
+            Console.WriteLine("============================================================");
+            Console.WriteLine();
+            
         }
 
         
