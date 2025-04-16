@@ -40,7 +40,7 @@ namespace Source.Services
         {
             Console.WriteLine("\n--------------------------------------------\nManage Found Items\n--------------------------------------------\n");
             //Get all found items from the database
-            var foundItems = db.FoundItems.ToList();
+            var foundItems = db.FoundItems.Include(x => x.Claims).ToList();
             if (foundItems.Count == 0)
             {
                 Console.WriteLine("No found items available.");
@@ -76,7 +76,7 @@ namespace Source.Services
         {
             Console.WriteLine("--------------------------------------------\nView Found Items\n--------------------------------------------");
             //Get all found items from the database
-            var foundItems = db.FoundItems.ToList();
+            var foundItems = db.FoundItems.Include(x => x.Claims).ToList();
             if (foundItems.Count == 0)
             {
                 Console.WriteLine("No found items available.\n");
