@@ -49,5 +49,50 @@ namespace Source.Services
 
 
         }
+        public static void ViewUserClaims(ApplicationDbContext db, User currentUser)
+        {
+            Console.WriteLine("--------------------------------------------\nMy Claims\n--------------------------------------------");
+
+            // Fetch all claims by the user and include the related found item info
+            var userClaims = db.Claims
+            .Include(c => c.FoundItem)
+            .Where(c => c.UserId == currentUser.UserId)
+            .ToList();
+
+            if (userClaims.Count == 0)
+            {
+                Console.WriteLine("You have not made any claims yet.");
+                return;
+            }
+
+            // Displays info about the found item and  the claim status
+            foreach (var claim in userClaims)
+            {
+                Console.WriteLine($"Claim ID: {claim.ClaimId} | Item Name: {claim.FoundItem?.Name} | Item Status: {claim.FoundItem?.Status}");
+            }
+
+            Console.Write("\nEnter the ID of a claim you want to revoke (or press Enter to skip): ");
+            string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input)) return;
+
+            if (!int.TryParse(input, out int claimId))
+            {
+                Console.WriteLine("Invalid input.");
+                return;
+            }
+
+            var claimToRemove = db.Claims.FirstOrDefault(c => c.ClaimId == claimId && c.UserId == currentUser.UserId);
+            if (claimToRemove == null)
+            {
+                 Console.WriteLine("Claim not found or not authorized.");
+                 return;
+            }
+
+            db.Claims.Remove(claimToRemove);
+            db.SaveChanges();
+            Console.WriteLine("Claim revoked successfully.");
+        }
+
     }
 }
