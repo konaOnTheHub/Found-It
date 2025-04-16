@@ -8,6 +8,35 @@ namespace Source.Services
 {
     public class PrinterService
     {
+        // Method to print the header with the logo and tagline
+        public static void PrintHeader()
+        {
+           
+            Console.WriteLine("============================================================");
+
+            
+            Console.WriteLine("███████╗ ██████╗ ██╗   ██╗███╗   ██╗██████╗     ██╗████████╗");
+            Console.WriteLine("██╔════╝██╔═══██╗██║   ██║████╗  ██║██╔══██╗    ██║╚══██╔══╝");
+            Console.WriteLine("█████╗  ██║   ██║██║   ██║██╔██╗ ██║██║  ██║    ██║   ██║   ");
+            Console.WriteLine("██╔══╝  ██║   ██║██║   ██║██║╚██╗██║██║  ██║    ██║   ██║   ");
+            Console.WriteLine("██║     ╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝    ██║   ██║   ");
+            Console.WriteLine("╚═╝      ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝     ╚═╝   ╚═╝   ");
+
+            
+            Console.WriteLine("============================================================");
+            Console.WriteLine("         Helping you reunite with what matters.");
+
+            // Prints the current date and time
+            Console.WriteLine($"                  {DateTime.Now.ToString("f")}");
+
+            
+            Console.WriteLine("============================================================");
+
+            // Welcome message
+            Console.WriteLine("\nWelcome to 'Found It' - Your Lost & Found Management System!");
+        }
+
+        
         //Method to print a table of found items
         public static void printFoundItem(List<FoundItem> items)
         {
