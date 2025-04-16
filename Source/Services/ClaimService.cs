@@ -27,6 +27,13 @@ namespace Source.Services
                 Console.WriteLine("--------------------------------------------\nFound item is already claimed.\n--------------------------------------------");
                 return;
             }
+            //Check if the user has already claimed the item
+            Claim? existingClaim = db.Claims.FirstOrDefault(x => x.FoundId == foundItem.FoundId && x.UserId == userLogged.UserId);
+            if (existingClaim != null)
+            {
+                Console.WriteLine("--------------------------------------------\nYou have already claimed this item.\n--------------------------------------------");
+                return;
+            }
             //Create a new claim on the found item
             Claim claim = new Claim
             {
