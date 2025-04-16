@@ -34,7 +34,7 @@ class Program
                     Console.WriteLine("1. View My Lost Items");
                     Console.WriteLine("2. Report Lost Item");
                     Console.WriteLine("3. View Found Items");
-                    Console.WriteLine("4. View My Claims");
+                    Console.WriteLine("4. View Or Revoke My Claims");
                     Console.WriteLine("5. Logout");
                     Console.Write("Select an option: ");
                     string option = Console.ReadLine();
@@ -53,7 +53,7 @@ class Program
                             break;
                         case "4":
                             // Call method to view and revoke user claims
-                            ClaimService.ViewUserClaims(db, user);
+                            ClaimService.ViewAndRevokeUserClaims(db, user);
                             break;
                         case "5":
                             Console.WriteLine("--------------------------------------------\nLogout successful.\n--------------------------------------------");
