@@ -49,7 +49,7 @@ namespace Source.Services
 
 
         }
-        public static void ViewUserClaims(ApplicationDbContext db, User currentUser)
+        public static void ViewAndRevokeUserClaims(ApplicationDbContext db, User currentUser)
         {
             Console.WriteLine("--------------------------------------------\nMy Claims\n--------------------------------------------");
 
