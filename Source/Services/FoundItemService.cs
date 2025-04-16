@@ -173,18 +173,29 @@ namespace Source.Services
 
               // Display selected claim info
               Console.WriteLine($"Selected Claim for: {selectedClaim.FoundItem?.Name}, Claimed by: {selectedClaim.User?.Name}");
-              Console.Write("Enter new status (e.g. Approved, Rejected, Pending): ");
+              Console.WriteLine("\nEnter the new status (Approved/Rejected): ");
               string newStatus = Console.ReadLine();
 
               // Validates input
-              if (string.IsNullOrWhiteSpace(newStatus))
+              if (string.IsNullOrWhiteSpace(newStatus) || (newStatus != "Approved" && newStatus != "Rejected"))
               {
                   Console.WriteLine("Invalid status.");
                   return;
               }
-
+                if (newStatus == "Approved")
+                {
+                    // Update found item status to "Claimed"
+                    selectedClaim.FoundItem.Status = "Claimed";
+                    //Update all other claims for the same found item to "Rejected"
+                    var otherClaims = db.Claims.Where(c => c.FoundId == selectedClaim.FoundId && c.ClaimId != selectedClaim.ClaimId).ToList();
+                    foreach (var claim in otherClaims)
+                    {
+                        claim.Status = "Rejected";
+                    }
+                }
               // Update claim status 
               selectedClaim.Status = newStatus;
+
               db.SaveChanges();
 
               Console.WriteLine("Claim status updated successfully.");
