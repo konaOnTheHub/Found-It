@@ -78,7 +78,8 @@ class Program
                             FoundItemService.ManageFoundItems(db);
                             break;
                         case "3":
-                            // Call method to manage lost items REYAN
+                            // Call method to manage lost items 
+                            LostItemService.ManageLostItems(db);
                             break;
                         case "4":
                             user = null; // Logout
