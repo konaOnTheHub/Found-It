@@ -36,42 +36,94 @@ namespace Source.Services
         }
 
         //Manage found items method
-        public static void ManageFoundItems(ApplicationDbContext db)
-        {
-            Console.WriteLine("\n--------------------------------------------\nManage Found Items\n--------------------------------------------\n");
-            //Get all found items from the database
-            var foundItems = db.FoundItems.Include(x => x.Claims).ToList();
-            if (foundItems.Count == 0)
-            {
-                Console.WriteLine("No found items available.");
-                return;
-            }
-            //Print the found items in a table format using reflection
-            PrinterService.printFoundItem(foundItems);
-            Console.WriteLine("\nSelect an option:\n1. Update Found Item Info\n2. Delete Found Item\n3. Manage Claims\n4. Back to Main Menu\n--------------------------------------------");
-            string option = Console.ReadLine();
-            switch (option)
-            {
-                case "1":
-                    //Update found item method PRANTEK
-                    break;
-                case "2":
-                    //Delete found item method
-                    DeleteFoundItem(db);
-                    break;
-                case "3":
-                    //Manage claims method 
-                    ManageClaims(db); 
-                    break;
-                case "4":
-                    return;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
-                    ManageFoundItems(db);
-                    break;
-            }
+ public static void ManageFoundItems(ApplicationDbContext db)
+{
+    Console.WriteLine("\n--------------------------------------------\nManage Found Items\n--------------------------------------------\n");
 
-        }
+    // Get all found items from the database
+    var foundItems = db.FoundItems.Include(x => x.Claims).ToList();
+    if (foundItems.Count == 0)
+    {
+        Console.WriteLine("No found items available.");
+        return;
+    }
+
+    // Print the found items in a table format using reflection
+    PrinterService.printFoundItem(foundItems);
+
+    // Ask the admin to select an option
+    Console.WriteLine("\nSelect an option:\n1. Update Found Item Info\n2. Delete Found Item\n3. Manage Claims\n4. Back to Main Menu\n--------------------------------------------");
+    string option = Console.ReadLine();
+
+    switch (option)
+    {
+        case "1":
+            // Update found item info
+            UpdateFoundItemInfo(db);
+            break;
+
+        case "2":
+            // Delete found item
+            DeleteFoundItem(db);
+            break;
+
+        case "3":
+            // Manage claims
+            ManageClaims(db); 
+            break;
+
+        case "4":
+            return;
+
+        default:
+            Console.WriteLine("Invalid option. Please try again.");
+            ManageFoundItems(db);
+            break;
+    }
+}
+
+// Method to update the found item info (name and description)
+public static void UpdateFoundItemInfo(ApplicationDbContext db)
+{
+    Console.WriteLine("\n--------------------------------------------\nUpdate Found Item Info\n--------------------------------------------\n");
+
+    // Ask for the ID of the found item to update
+    Console.Write("Enter the ID of the found item you want to update: ");
+    string input = Console.ReadLine();
+
+    // Validate the input and check if it's a valid integer
+    if (string.IsNullOrEmpty(input) || !int.TryParse(input, out int itemId))
+    {
+        Console.WriteLine("Invalid input. Please enter a valid found item ID.");
+        return;
+    }
+
+    // Find the found item by ID
+    var foundItem = db.FoundItems.FirstOrDefault(x => x.FoundId == itemId);
+    if (foundItem == null)
+    {
+        Console.WriteLine("Found item not found.");
+        return;
+    }
+
+    // Show the current details
+    Console.WriteLine($"Current Name: {foundItem.Name}");
+    Console.WriteLine($"Current Description: {foundItem.Description}");
+
+    // Ask for the new name
+    Console.Write("Enter a new name: ");
+    string newName = Console.ReadLine();
+    foundItem.Name = newName;
+
+    // Ask for the new description
+    Console.Write("Enter a new description: ");
+    string newDescription = Console.ReadLine();
+    foundItem.Description = newDescription;
+
+    // Save the changes to the database
+    db.SaveChanges();
+    Console.WriteLine("Found item updated successfully.");
+}
         public static void ViewFoundItems(ApplicationDbContext db, User userLogged)
         {
             Console.WriteLine("--------------------------------------------\nView Found Items\n--------------------------------------------");
@@ -203,3 +255,4 @@ namespace Source.Services
 
     }
 }
+
