@@ -45,6 +45,8 @@ class Program
                     switch (option)
                     {
                         case "1":
+                            LostItemService.ViewLostItems(db,user);
+                            
                             // Call method to view lost items SAKI
                             break;
                         case "2":

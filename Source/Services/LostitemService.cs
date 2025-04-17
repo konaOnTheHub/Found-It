@@ -7,7 +7,51 @@ using Source.Models;
 namespace Source.Services
 {
     public static class LostItemService
+    {// Method to view lost items reported by the current user
+public static void ViewLostItems(ApplicationDbContext db, User currentUser)
+{
+    Console.WriteLine("--------------------------------------------\nView Lost Items\n--------------------------------------------");
+
+    // Retrieve lost items reported by the current user
+    var lostItems = db.LostItems.Where(item => item.UserId == currentUser.UserId).ToList();
+
+    if (!lostItems.Any())
     {
+        Console.WriteLine("You haven't reported any lost items yet.");
+        return;
+    }
+
+    // Display the list of lost items
+    foreach (var item in lostItems)
+    {
+        Console.WriteLine($"ID: {item.ItemId} | Name: {item.Name} | Description: {item.Description} | Location: {item.Location} | Date Lost: {item.DateLost} | Status: {item.Status}");
+    }
+
+    // Optionally, you can add the functionality to allow the user to select an item for further actions (e.g., update status, claim, etc.)
+    Console.WriteLine("\nEnter the ID of the item you want to view or update (or press Enter to go back):");
+    string input = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(input)) return;
+
+    if (int.TryParse(input, out int itemId))
+    {
+        var selectedItem = db.LostItems.FirstOrDefault(item => item.ItemId == itemId);
+        if (selectedItem != null)
+        {
+            Console.WriteLine($"You selected: {selectedItem.Name} - {selectedItem.Description}");
+            // Add functionality to view or update the item (e.g., change status, delete, etc.)
+        }
+        else
+        {
+            Console.WriteLine("Item not found.");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Invalid input.");
+    }
+}
+
         // Method to report a lost item
         public static void ReportLostItem(ApplicationDbContext db, User currentUser)
         {
