@@ -85,6 +85,8 @@ namespace Source.Services
                     break;
 
                 case "4":
+                    Console.Clear();
+                    PrinterService.PrintHeader();
                     return;
 
                 default:
