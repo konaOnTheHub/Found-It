@@ -166,6 +166,8 @@ namespace Source.Services
                     ClaimService.CreateClaim(db, userLogged);
                     break;
                 case "2":
+                    Console.Clear();
+                    PrinterService.PrintHeader();
                     return;
                 default:
                     Console.WriteLine("Invalid option. Please try again.");
