@@ -70,30 +70,47 @@ namespace Source.Services
             // Displays info about the found item and  the claim status
             foreach (var claim in userClaims)
             {
-                Console.WriteLine($"Claim ID: {claim.ClaimId} | Item Name: {claim.FoundItem?.Name} | Item Status: {claim.FoundItem?.Status}");
+                Console.WriteLine($"Claim ID: {claim.ClaimId} | Item Name: {claim.FoundItem?.Name} | Claim Status: {claim.Status}");
             }
 
-            Console.Write("\nEnter the ID of a claim you want to revoke (or press Enter to skip): ");
+            Console.Write("\n1. Revoke a claim\n2. Back to main menu\nSelect an option: ");
             string input = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(input)) return;
-
-            if (!int.TryParse(input, out int claimId))
+            switch (input)
             {
-                Console.WriteLine("Invalid input.");
-                return;
+                case "1":
+                    Console.Write("Enter the ID of the claim you want to revoke: ");
+                    string inputId = Console.ReadLine();
+
+                    if (!int.TryParse(inputId, out int claimId))
+                    {
+                        Console.WriteLine("Invalid input.");
+                        return;
+                    }
+
+                    var claimToRemove = db.Claims.FirstOrDefault(c => c.ClaimId == claimId && c.UserId == currentUser.UserId);
+                    if (claimToRemove == null)
+                    {
+                        Console.WriteLine("Claim not found or not authorized.");
+                        return;
+                    }
+                    // Check if the claim is already approved
+                    if (claimToRemove.Status == "Approved")
+                    {
+                        Console.WriteLine("Cannot revoke an approved claim.");
+                        return;
+                    }
+
+                    db.Claims.Remove(claimToRemove);
+                    db.SaveChanges();
+                    Console.WriteLine("Claim revoked successfully.");
+                    break;
+                case "2":
+                    return;
+                default:
+                    Console.WriteLine("Invalid option. Please try again.");
+                    break;
             }
 
-            var claimToRemove = db.Claims.FirstOrDefault(c => c.ClaimId == claimId && c.UserId == currentUser.UserId);
-            if (claimToRemove == null)
-            {
-                 Console.WriteLine("Claim not found or not authorized.");
-                 return;
-            }
-
-            db.Claims.Remove(claimToRemove);
-            db.SaveChanges();
-            Console.WriteLine("Claim revoked successfully.");
         }
 
     }
