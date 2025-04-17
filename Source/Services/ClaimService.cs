@@ -13,8 +13,7 @@ namespace Source.Services
     {
         public static void CreateClaim(ApplicationDbContext db, User userLogged)
         {
-            Console.Clear();
-            PrinterService.PrintHeader();
+
             Console.WriteLine("--------------------------------------------\nCreate Claim\n--------------------------------------------\n");
             Console.Write("Enter the ID of the found item you want to claim: ");
             string input = Console.ReadLine();
