@@ -22,6 +22,10 @@ class Program
         db.Database.EnsureCreated(); // Ensure the database is created
         //Instantiate the user object to null
         //This will be used to check if the user is logged in or not.
+
+        Console.Clear();
+        PrinterService.PrintHeader(); // Prints the header
+
         User user = null;
 
         var running = true;
@@ -31,7 +35,6 @@ class Program
             {
                 if (user.Role == "User")
                 {
-                    PrinterService.PrintHeader(); // Prints the header
                     Console.WriteLine("1. View My Lost Items");
                     Console.WriteLine("2. Report Lost Item");
                     Console.WriteLine("3. View Found Items");
@@ -47,7 +50,7 @@ class Program
                         case "2":
                             // Report Lost Item
                             LostItemService.ReportLostItem(db, user);
-                             break;
+                            break;
                         case "3":
                             // Call method to view found items
                             FoundItemService.ViewFoundItems(db, user);
@@ -57,17 +60,20 @@ class Program
                             ClaimService.ViewAndRevokeUserClaims(db, user);
                             break;
                         case "5":
+                            Console.Clear();
+                            PrinterService.PrintHeader();
                             Console.WriteLine("--------------------------------------------\nLogout successful.\n--------------------------------------------");
                             user = null; // Logout
                             break;
                         default:
+                            Console.Clear();
+                            PrinterService.PrintHeader();
                             Console.WriteLine("Invalid option. Please try again.");
                             break;
                     }
                 }
                 else if (user.Role == "Admin")
                 {
-                    PrinterService.PrintHeader(); // Prints the header
                     Console.WriteLine("1. Create Found Item");
                     Console.WriteLine("2. Manage Found Items");
                     Console.WriteLine("3. Manage Lost Items");
@@ -90,9 +96,13 @@ class Program
                             break;
                         case "4":
                             user = null; // Logout
+                            Console.Clear();
+                            PrinterService.PrintHeader();
                             Console.WriteLine("--------------------------------------------\nLogout successful.\n--------------------------------------------");
                             break;
                         default:
+                            Console.Clear();
+                            PrinterService.PrintHeader();
                             Console.WriteLine("Invalid option. Please try again.");
                             break;
                     }
@@ -101,43 +111,49 @@ class Program
             else
             //Means user has not logged in
             {
-    PrinterService.PrintHeader(); // Prints the header
-    Console.WriteLine("Generic Bar Name Lost & Found Management System");
-    Console.WriteLine("1. Login");
-    Console.WriteLine("2. Register");
-    Console.WriteLine("3. Exit");
-    Console.Write("Select an option: ");
-    
-    // Read the user input and convert it to lowercase to make it case-insensitive
-    string option = Console.ReadLine()?.ToLower(); 
+                Console.WriteLine("Generic Bar Name Lost & Found Management System");
+                Console.WriteLine("1. Login");
+                Console.WriteLine("2. Register");
+                Console.WriteLine("3. Exit");
+                Console.Write("Select an option: ");
 
-    switch (option)
-    {
-        case "1":
-        case "login":
-            user = AuthService.LoginUser(db);
-            if (user != null)
-            {
-                Console.WriteLine($"--------------------------------------------\nWelcome, {user.Name}!\n--------------------------------------------");
+                // Read the user input and convert it to lowercase to make it case-insensitive
+                string option = Console.ReadLine()?.ToLower();
+
+                switch (option)
+                {
+                    case "1":
+                    case "login":
+                        user = AuthService.LoginUser(db);
+                        if (user != null)
+                        {
+                            Console.Clear();
+                            PrinterService.PrintHeader();
+                            Console.WriteLine($"--------------------------------------------\nWelcome, {user.Name}!\n--------------------------------------------");
+
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            PrinterService.PrintHeader();
+                            Console.WriteLine("--------------------------------------------\nInvalid username or password.\n--------------------------------------------");
+                        }
+                        break;
+                    case "2":
+                    case "register":
+                        AuthService.RegisterUser(db);
+                        break;
+                    case "3":
+                    case "exit":
+                        running = false;
+                        break;
+                    default:
+                        Console.Clear();
+                        PrinterService.PrintHeader();
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
+                }
             }
-            else
-            {
-                Console.WriteLine("--------------------------------------------\nInvalid username or password.\n--------------------------------------------");
-            }
-            break;
-        case "2":
-        case "register":
-            AuthService.RegisterUser(db);
-            break;
-        case "3":
-        case "exit":
-            running = false;
-            break;
-        default:
-            Console.WriteLine("Invalid option. Please try again.");
-            break;
-    }
-}
         }
 
     }

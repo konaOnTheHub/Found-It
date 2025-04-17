@@ -11,6 +11,8 @@ namespace Source.Services
         // Method to report a lost item
         public static void ReportLostItem(ApplicationDbContext db, User currentUser)
         {
+            Console.Clear();
+            PrinterService.PrintHeader();
             Console.WriteLine("--------------------------------------------\nReport Lost Item\n--------------------------------------------");
 
             // Gets item details 
@@ -24,6 +26,8 @@ namespace Source.Services
             // Check if all fields are filled
             if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(description) || string.IsNullOrWhiteSpace(location))
             {
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("All fields are required. Please try again.");
                 return;
             }
@@ -34,21 +38,24 @@ namespace Source.Services
                 Name = name,
                 Description = description,
                 Location = location,
-                DateLost = DateOnly.FromDateTime(DateTime.Now), 
-                Status = "Lost", 
+                DateLost = DateOnly.FromDateTime(DateTime.Now),
+                Status = "Lost",
                 UserId = currentUser.UserId
             };
 
             // Add the lost item to the database and save changes
             db.LostItems.Add(lostItem);
             db.SaveChanges();
-
+            Console.Clear();
+            PrinterService.PrintHeader();
             Console.WriteLine("Lost item reported successfully.");
         }
 
         // Method to manage and update lost items
         public static void ManageLostItems(ApplicationDbContext db)
         {
+            Console.Clear();
+            PrinterService.PrintHeader();
             Console.WriteLine("--------------------------------------------\nManage Lost Items\n--------------------------------------------");
 
             // Retrieve all lost items from the database including user details
@@ -57,6 +64,8 @@ namespace Source.Services
             // Check if there are no lost items
             if (!lostItems.Any())
             {
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("No lost items reported yet.");
                 return;
             }
@@ -67,17 +76,24 @@ namespace Source.Services
                 Console.WriteLine($"ID: {item.ItemId} | Name: {item.Name} | Description: {item.Description} | Location: {item.Location} | Date Lost: {item.DateLost} | Status: {item.Status} | Reported By: {item.User?.Name}");
             }
 
-            
+
             Console.WriteLine("\nEnter the ID of the item you want to update (or press Enter to go back):");
             string input = Console.ReadLine();
 
             // If input is empty or invalid, return
-            if (!int.TryParse(input, out int itemId)) return;
+            if (!int.TryParse(input, out int itemId))
+            {
+                Console.Clear();
+                PrinterService.PrintHeader();
+                return;
+            }
 
             // Retrieve the selected item
             var selectedItem = db.LostItems.FirstOrDefault(i => i.ItemId == itemId);
             if (selectedItem == null)
             {
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("Item not found.");
                 return;
             }
@@ -91,11 +107,15 @@ namespace Source.Services
             {
                 selectedItem.Status = newStatus;
                 db.SaveChanges();
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("Status updated successfully.");
             }
             else
             {
                 // Handle invalid status input
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("Invalid status.");
             }
         }

@@ -13,19 +13,33 @@ namespace Source.Services
     {
         public static void CreateClaim(ApplicationDbContext db, User userLogged)
         {
+            Console.Clear();
+            PrinterService.PrintHeader();
             Console.WriteLine("--------------------------------------------\nCreate Claim\n--------------------------------------------\n");
             Console.Write("Enter the ID of the found item you want to claim: ");
             string input = Console.ReadLine();
+            //Check if input is convertable to an integer
+            if (!int.TryParse(input, out int foundId))
+            {
+                Console.Clear();
+                PrinterService.PrintHeader();
+                Console.WriteLine("--------------------------------------------\nInvalid input. Please enter a valid ID.\n--------------------------------------------");
+                return;
+            }
             FoundItem? foundItem = db.FoundItems.FirstOrDefault(x => x.FoundId == int.Parse(input));
             //Check if found item exists
             if (foundItem == null)
             {
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("--------------------------------------------\nFound item not found.\n--------------------------------------------");
                 return;
             }
             //Check if the found item is already claimed
             if (foundItem.Status == "Claimed")
             {
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("--------------------------------------------\nFound item is already claimed.\n--------------------------------------------");
                 return;
             }
@@ -33,6 +47,8 @@ namespace Source.Services
             Claim? existingClaim = db.Claims.FirstOrDefault(x => x.FoundId == foundItem.FoundId && x.UserId == userLogged.UserId);
             if (existingClaim != null)
             {
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("--------------------------------------------\nYou have already claimed this item.\n--------------------------------------------");
                 return;
             }
@@ -46,6 +62,8 @@ namespace Source.Services
             };
             db.Claims.Add(claim);
             db.SaveChanges();
+            Console.Clear();
+            PrinterService.PrintHeader();
             Console.WriteLine("--------------------------------------------\nClaim created successfully.\n--------------------------------------------");
             return;
 
@@ -53,6 +71,8 @@ namespace Source.Services
         }
         public static void ViewAndRevokeUserClaims(ApplicationDbContext db, User currentUser)
         {
+            Console.Clear();
+            PrinterService.PrintHeader();
             Console.WriteLine("--------------------------------------------\nMy Claims\n--------------------------------------------");
 
             // Fetch all claims by the user and include the related found item info
@@ -63,6 +83,8 @@ namespace Source.Services
 
             if (userClaims.Count == 0)
             {
+                Console.Clear();
+                PrinterService.PrintHeader();
                 Console.WriteLine("You have not made any claims yet.");
                 return;
             }
@@ -83,6 +105,8 @@ namespace Source.Services
 
                     if (!int.TryParse(inputId, out int claimId))
                     {
+                        Console.Clear();
+                        PrinterService.PrintHeader();
                         Console.WriteLine("Invalid input.");
                         return;
                     }
@@ -90,23 +114,33 @@ namespace Source.Services
                     var claimToRemove = db.Claims.FirstOrDefault(c => c.ClaimId == claimId && c.UserId == currentUser.UserId);
                     if (claimToRemove == null)
                     {
+                        Console.Clear();
+                        PrinterService.PrintHeader();
                         Console.WriteLine("Claim not found or not authorized.");
                         return;
                     }
                     // Check if the claim is already approved
                     if (claimToRemove.Status == "Approved")
                     {
+                        Console.Clear();
+                        PrinterService.PrintHeader();
                         Console.WriteLine("Cannot revoke an approved claim.");
                         return;
                     }
 
                     db.Claims.Remove(claimToRemove);
                     db.SaveChanges();
+                    Console.Clear();
+                    PrinterService.PrintHeader();
                     Console.WriteLine("Claim revoked successfully.");
                     break;
                 case "2":
+                    Console.Clear();
+                    PrinterService.PrintHeader();
                     return;
                 default:
+                    Console.Clear();
+                    PrinterService.PrintHeader();
                     Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
