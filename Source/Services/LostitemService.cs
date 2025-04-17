@@ -61,6 +61,8 @@ namespace Source.Services
         }
         else
         {
+            Console.Clear();
+            PrinterService.PrintHeader();
             return;
         }
 
