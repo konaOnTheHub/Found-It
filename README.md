@@ -1,8 +1,8 @@
-# LostFoundManagement2.0
-To get the program running
+# Found-It -- Lost and Found Management System
+## To get the program running
 
 
-Install NuGet packages
+### Install NuGet packages
 
 1: Microsoft.EntityFrameworkCore
 
@@ -15,7 +15,30 @@ Install NuGet packages
 5: Microsoft.Extensions.Configuration.Json
 
 
-Create an empty database in SSMS and get your connection string and paste it into appsettings.json by replacing "CONNECTION STRING HERE"
+### Hook up the database
+
+Using the database makefile provided in the makefile folder, generate the database.
+
+Get the connection string for the database, then paste it into appsettings.json replacing "CONNECTION STRING HERE" with the connection string.
+
+
+## Using the program
+
+The program is a simple console app, it provides simple menus in the console for manipulating data.
+
+The program accounts for two types of users; admins and regular users. Admins are intended for staff working on the premises the app is deployed on. Regular users are meant to be customers of the premises.
+
+An admin user is already seeded with the makefile for the database the login information is as follows: email: admin@admin.com password: admin123
+
+To create and use a "User" please follow the appropriate methods once the program is run in the console.
+
+The underlying idea with the two user system is "Users" may report their belongings as a lost item. They may also make claims on found items posted by "Admins".
+
+Admins upon finding an item on the premises of which no lost item request was posted for may make a found item entry that regular use can make claims on. They may also mark lost items as found or claimed.
+
+The program also offers ways to update, delete found item, lost item and claim entries alike accounting for ownership when applicable.
+
+TO DELETE BEFORE SUBMISSION:
 
 Please don't commit your connection string to appsettings.json instead ignore the file with: git update-index --skip-worktree appsettings.json
 
