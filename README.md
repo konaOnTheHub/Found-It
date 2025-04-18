@@ -40,6 +40,30 @@ The program also offers ways to update, delete found item, lost item and claim e
 
 
 
-TESTING FOR THE LOST AND FOUND MANAGEMENT FOUND HERE:
+## People
 
-https://docs.google.com/document/d/18Rc26MJzbVMUJIk4zoVUiUlpgQukwWlpirYxUlkTY4E/edit?tab=t.0
+Sakibur Rahman (Saki-25)
+ID: M00951536
+Role: Manager
+
+
+Arun Kumar Sah (arunkumar669)
+ID: M00970637 
+Role: Secretary 
+
+
+Peter Nagy (konaOnTheHub)
+ID: M00871555
+Developer
+
+
+Muhammad Rayan (rayan2551)
+ID: M00957926
+Developer
+
+
+Prantik Paul (djiiyn)
+ID: M00938317
+Tester
+
+
