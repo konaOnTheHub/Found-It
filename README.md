@@ -38,9 +38,6 @@ Admins upon finding an item on the premises of which no lost item request was po
 
 The program also offers ways to update, delete found item, lost item and claim entries alike accounting for ownership when applicable.
 
-TO DELETE BEFORE SUBMISSION:
-
-Please don't commit your connection string to appsettings.json instead ignore the file with: git update-index --skip-worktree appsettings.json
 
 
 TESTING FOR THE LOST AND FOUND MANAGEMENT FOUND HERE:
